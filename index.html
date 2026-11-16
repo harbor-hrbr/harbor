@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARBOR (HRBR) — The Harbor for Agents &amp; Humans</title>
+<meta name="description" content="HARBOR is a seat-sale token on BNB Smart Chain. 1,500 free berths (one per wallet) and 4,500 paid berths at 0.006 BNB. Pool opens on sellout or after 24 hours; LP is burned.">
+<style>
+  :root{
+    --deep:#041e2e; --sea:#062a3a; --sea2:#0a3a4f; --teal:#0e7c86; --teal2:#12a5b4;
+    --gold:#e8b34b; --gold2:#f5cd6b; --foam:#eaf6f8; --mist:#9fc3cc; --card:#083048;
+    --line:rgba(159,195,204,.22); --danger:#e0655f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:linear-gradient(180deg,var(--deep) 0%,var(--sea) 340px,var(--deep) 100%);color:var(--foam);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.55}
+  a{color:var(--teal2)}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:20;background:rgba(4,30,46,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:16px;padding:14px 0}
+  .logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:22px;letter-spacing:2px}
+  .logo svg{flex:none}
+  .logo small{font-size:11px;color:var(--gold);letter-spacing:3px;display:block;line-height:1}
+  nav{margin-left:auto;display:flex;gap:20px;font-size:14px}
+  nav a{color:var(--mist);text-decoration:none}
+  nav a:hover{color:var(--foam)}
+  .langbtn,.connect{cursor:pointer;border:1px solid var(--line);background:var(--sea2);color:var(--foam);
+    padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600}
+  .connect{background:var(--gold);color:#231a04;border-color:var(--gold)}
+  .connect:hover{background:var(--gold2)}
+  .hero{padding:64px 0 30px;text-align:center;position:relative;overflow:hidden}
+  .hero .waves{position:absolute;left:0;right:0;bottom:-6px;opacity:.35;pointer-events:none}
+  .kicker{color:var(--gold);letter-spacing:4px;font-size:12px;font-weight:700;text-transform:uppercase}
+  h1{font-size:52px;line-height:1.08;margin:14px 0 6px;font-weight:900}
+  h1 .thin{color:var(--teal2)}
+  .tagline{font-size:19px;color:var(--mist);max-width:720px;margin:10px auto 0}
+  .countdowns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:30px 0 6px}
+  .cd{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 22px;min-width:230px}
+  .cd .lbl{font-size:12px;letter-spacing:2px;color:var(--mist);text-transform:uppercase}
+  .cd .val{font-size:27px;font-weight:800;color:var(--gold2);font-variant-numeric:tabular-nums}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .stat .n{font-size:26px;font-weight:800}
+  .stat .d{font-size:13px;color:var(--mist);margin-top:3px}
+  section{padding:34px 0}
+  h2{font-size:29px;margin-bottom:6px}
+  .sub{color:var(--mist);margin-bottom:20px;max-width:760px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+  .panel h3{font-size:20px;margin-bottom:4px}
+  .panel .p-sub{color:var(--mist);font-size:14px;margin-bottom:16px}
+  .meter{height:12px;background:#052233;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+  .meter>i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));width:0%}
+  .meter.gold>i{background:linear-gradient(90deg,#b9852e,var(--gold))}
+  .meter-row{display:flex;justify-content:space-between;font-size:13px;color:var(--mist);margin:8px 0 14px}
+  label{display:block;font-size:13px;color:var(--mist);margin:12px 0 5px}
+  input,select{width:100%;background:#052233;border:1px solid var(--line);border-radius:10px;color:var(--foam);
+    padding:11px 12px;font-size:15px}
+  .bigbtn{width:100%;margin-top:16px;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer}
+  .bigbtn.free{background:var(--teal);color:#eafcff}
+  .bigbtn.free:hover{background:var(--teal2)}
+  .bigbtn.buy{background:var(--gold);color:#231a04}
+  .bigbtn.buy:hover{background:var(--gold2)}
+  .note{font-size:12.5px;color:var(--mist);margin-top:10px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--mist);font-weight:600;font-size:12.5px;letter-spacing:1px;text-transform:uppercase}
+  td.addr{font-family:ui-monospace,Consolas,monospace;font-size:13px}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .step .num{width:32px;height:32px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:10px}
+  .step h4{margin-bottom:5px;font-size:16px}
+  .step p{font-size:13.5px;color:var(--mist)}
+  pre{background:#03141f;border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;
+    font-size:12.8px;line-height:1.5;color:#cfe8ec;white-space:pre-wrap;word-break:break-word}
+  .doclinks{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .doclinks a{border:1px solid var(--line);border-radius:999px;padding:7px 14px;text-decoration:none;color:var(--foam);font-size:13.5px;background:var(--sea2)}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+  summary{cursor:pointer;font-weight:700}
+  details p{color:var(--mist);margin-top:8px;font-size:14.5px}
+  .poolbanner{border:1px solid var(--gold);background:linear-gradient(90deg,rgba(232,179,75,.13),rgba(14,124,134,.13));
+    border-radius:16px;padding:20px 24px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .poolbanner .t{font-size:19px;font-weight:800}
+  .poolbanner .d{color:var(--mist);font-size:14.5px;max-width:760px}
+  footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--mist);font-size:13.5px;margin-top:20px}
+  footer .addr{font-family:ui-monospace,Consolas,monospace;word-break:break-all;color:var(--foam)}
+  @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}h1{font-size:38px}nav{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="logo">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="4.2" r="2.1" stroke="#e8b34b" stroke-width="1.8"/><path d="M12 6.5V21M12 21c-4.5 0-7.5-2.6-8.6-6.2M12 21c4.5 0 7.5-2.6 8.6-6.2M3.4 14.8 1.8 18l3.4-.6M20.6 14.8 22.2 18l-3.4-.6M6.5 10.5h11" stroke="#12a5b4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>HARBOR<small>HRBR · BNB SMART CHAIN</small></span>
+    </div>
+    <nav>
+      <a href="#sale" data-i18n="nav_sale">Berths</a>
+      <a href="#invites" data-i18n="nav_invites">Invites</a>
+      <a href="#how" data-i18n="nav_how">How it works</a>
+      <a href="#agents" data-i18n="nav_agents">For agents</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+    </nav>
+    <button class="langbtn" id="langBtn" type="button">中文</button>
+    <button class="connect" id="connectBtn" type="button" data-i18n="connect">Connect Wallet</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker" data-i18n="kicker">A harbor for agents &amp; humans</div>
+    <h1 data-i18n="h1">Every ship needs<br>a <span class="thin">berth</span>.</h1>
+    <p class="tagline" data-i18n="tagline">HARBOR is a seat sale on BNB Smart Chain. Claim one free berth per wallet, or buy up to ten. When the harbor fills — or 24 hours pass — the PancakeSwap pool opens, the LP is burned, and the fleet sails.</p>
+    <div class="countdowns">
+      <div class="cd"><div class="lbl" data-i18n="cd_open">Sale opens in</div><div class="val" id="cdStart">--:--:--</div></div>
+      <div class="cd"><div class="lbl" data-i18n="cd_pool">Pool opens by</div><div class="val" id="cdPool">--:--:--</div></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">1,500</div><div class="d" data-i18n="st_free">Free berths — 1 per wallet, agents &amp; humans</div></div>
+      <div class="stat"><div class="n">4,500</div><div class="d" data-i18n="st_paid">Paid berths at 0.006 BNB — max 10 per wallet</div></div>
+      <div class="stat"><div class="n">Immutable</div><div class="d" data-i18n="st_immutable">No owner, no admin keys, no pause, no blacklist</div></div>
+      <div class="stat"><div class="n">&le; 24h</div><div class="d" data-i18n="st_deadline">The pool always opens — on sellout or within 24 hours</div></div>
+    </div>
+  </div>
+  <svg class="waves" width="100%" height="54" viewBox="0 0 1440 54" preserveAspectRatio="none" aria-hidden="true"><path d="M0 28 Q 60 6 120 28 T 240 28 T 360 28 T 480 28 T 600 28 T 720 28 T 840 28 T 960 28 T 1080 28 T 1200 28 T 1320 28 T 1440 28 V54 H0 Z" fill="#0e7c86"/></svg>
+</div>
+
+<div class="wrap">
+  <section id="sale">
+    <h2 data-i18n="sale_h">Claim your berth</h2>
+    <p class="sub" data-i18n="sale_sub">One free berth per wallet — no Agent ID, no posts, no gatekeeping. Paid berths are open to everyone. Whoever arrives first, docks first.</p>
+    <div class="grid2">
+      <div class="panel">
+        <h3 data-i18n="free_h">Free berth</h3>
+        <p class="p-sub" data-i18n="free_sub">1 share = 1,000,000 HRBR. One claim per wallet, ever.</p>
+        <div class="meter"><i id="freeBar"></i></div>
+        <div class="meter-row"><span><span id="freeSold">0</span> / 1,500 <span data-i18n="claimed">claimed</span></span><span id="freeLeft">1,500 <span data-i18n="left">left</span></span></div>
+        <label for="freeInviter" data-i18n="inviter">Inviter address (optional)</label>
+        <input id="freeInviter" type="text" placeholder="0x…" autocomplete="off" spellcheck="false">
+        <button class="bigbtn free" id="claimBtn" type="button" data-i18n="claim_btn">Claim free berth</button>
+        <p class="note" data-i18n="free_note">Your inviter is recorded on your first mint only, and only if they have already minted.</p>
+        <p class="note" id="myFree"></p>
+      </div>
+      <div class="panel">
+        <h3 data-i18n="paid_h">Paid berth</h3>
+        <p class="p-sub" data-i18n="paid_sub">0.006 BNB per share.</p>
+        <div class="meter gold"><i id="paidBar"></i></div>
+        <div class="meter-row"><span><span id="paidSold">0</span> / 4,500 <span data-i18n="sold">sold</span></span><span id="paidLeft">4,500 <span data-i18n="left">left</span></span></div>
+        <label for="buyN" data-i18n="seats">Seats (max 10 per wallet)</label>
+        <select id="buyN"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+        <label for="buyInviter" data-i18n="inviter">Inviter address (optional)</label>
+        <input id="buyInviter" type="text" placeholder="0x…" autocomplete="off" spellcheck="false">
+        <button class="bigbtn buy" id="buyBtn" type="button"><span data-i18n="buy_btn">Buy berths</span> · <span id="buyCost">0.030</span> BNB</button>
+        <p class="note" data-i18n="paid_note">Exact payment only. Taking a free berth never reduces your paid allowance.</p>
+        <p class="note" id="myPaid"></p>
+      </div>
+    </div>
+  <div id="shareBox" class="poolbanner" style="display:none;margin-top:18px">
+      <div>
+        <div class="t" data-i18n="share_t">You are on board! Tell the harbor:</div>
+        <div class="doclinks"><a id="shareLink" href="#" target="_blank" rel="noopener" data-i18n="share_btn">Share on X</a></div>
+      </div>
+    </div>
+    <p class="note" id="txStatus" style="margin-top:12px"></p>
+  </section>
+
+  <div class="poolbanner">
+    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20 12 3l8 17H4Z" stroke="#e8b34b" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 3v17M4 20h16" stroke="#12a5b4" stroke-width="1.6"/></svg>
+    <div>
+      <div class="t" data-i18n="pool_t">The pool always opens — within 24 hours at the latest</div>
+      <div class="d" data-i18n="pool_d">The PancakeSwap pool opens the moment the last paid berth sells, or on the first interaction after the 24-hour deadline. Sale proceeds plus the token reserve become liquidity, LP tokens are burned, and every unsold berth token is burned with them. HRBR transfers stay locked until the pool opens.</div>
+    </div>
+  </div>
+
+  <section id="invites">
+    <h2 data-i18n="inv_h">Top inviters</h2>
+    <p class="sub" data-i18n="inv_sub">Invite wallets to the harbor. Inviters share a reward pool of 800,000,000 HRBR, paid pro-rata by invite count and claimable after the pool opens. The board shows the top 100.</p>
+    <div class="panel">
+      <table>
+        <thead><tr><th>#</th><th data-i18n="th_addr">Address</th><th data-i18n="th_inv">Invites</th><th data-i18n="th_share">Est. reward</th></tr></thead>
+        <tbody id="boardBody">
+          <tr><td>1</td><td class="addr">—</td><td>—</td><td>—</td></tr>
+          <tr><td>2</td><td class="addr">—</td><td>—</td><td>—</td></tr>
+          <tr><td>3</td><td class="addr">—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <button class="bigbtn free" id="rewardBtn" type="button" style="max-width:320px" data-i18n="reward_btn">Claim my invite reward</button>
+      <p class="note" data-i18n="inv_note">Your inviter is locked in on your first mint. Self-invites do not count.</p>
+      <p class="note" id="myReward"></p>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2 data-i18n="how_h">How it works</h2>
+    <p class="sub" data-i18n="how_sub">Four steps, all enforced by one immutable contract. No owner, no admin keys, no pause, no blacklist, no withdrawals.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h4 data-i18n="s1_h">Dock</h4><p data-i18n="s1_p">Connect any wallet on BNB Smart Chain. Agents and humans board through the same gate.</p></div>
+      <div class="step"><div class="num">2</div><h4 data-i18n="s2_h">Take a berth</h4><p data-i18n="s2_p">Claim 1 free share, buy up to 10 paid shares at 0.006 BNB each, or do both.</p></div>
+      <div class="step"><div class="num">3</div><h4 data-i18n="s3_h">Harbor fills</h4><p data-i18n="s3_p">Invite others and climb the board. Proceeds from every paid berth are held by the contract for the pool.</p></div>
+      <div class="step"><div class="num">4</div><h4 data-i18n="s4_h">Fleet sails</h4><p data-i18n="s4_p">The pool opens on sellout or after 24 hours. LP is burned, unsold tokens are burned, transfers unlock, and trading begins.</p></div>
+    </div>
+  </section>
+
+  <section id="agents">
+    <h2 data-i18n="ag_h">For agents</h2>
+    <p class="sub" data-i18n="ag_sub">Paste this prompt into your agent. It verifies the contract against the address published here before signing anything, and waits for your explicit approval.</p>
+    <pre id="agentPrompt">You are helping me join the HARBOR (HRBR) seat sale on BNB Smart Chain (chainId 56).
+
+Official site: https://harbor-hrbr.github.io/harbor/
+Sale contract: 0xa5844F0539E289C9A477672818Ee263eF862b517
+
+Rules you must follow:
+1. Read the contract address from this prompt only. Call website() on the contract and check it returns the official site above before any transaction.
+2. Show me the contract, the function, the arguments and the exact BNB amount, then wait for my explicit "yes" before sending.
+3. Never ask for a private key, seed phrase or password. Never approve unlimited token allowances.
+4. Free berth: call claimFree(inviter) — one per wallet, no payment.
+5. Paid berth: call buy(n, inviter) with exactly n × 0.006 BNB — maximum 10 paid seats per wallet.
+6. Full machine-readable docs: read agent.md and llms.txt on the official site.</pre>
+    <div class="doclinks">
+      <a href="agent.md">agent.md</a>
+      <a href="llms.txt">llms.txt</a>
+      <a href="skill.md">skill.md</a>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2 data-i18n="faq_h">FAQ</h2>
+    <details><summary data-i18n="q1">Who can claim a free berth?</summary><p data-i18n="a1">Anyone. Every wallet — agent-operated or human — may claim exactly one free share. There is no Agent ID check, no social post and no allowlist.</p></details>
+    <details><summary data-i18n="q2">Who can buy paid berths?</summary><p data-i18n="a2">Anyone with a wallet and BNB. Each wallet may hold at most 10 paid seats during the sale, at exactly 0.006 BNB per seat.</p></details>
+    <details><summary data-i18n="q3">Where does the money go?</summary><p data-i18n="a3">Proceeds from paid berths stay locked in the immutable contract and seed the liquidity pool when it opens. Nothing can be withdrawn by anyone, and no one can change the rules.</p></details>
+    <details><summary data-i18n="q4">When does trading start?</summary><p data-i18n="a4">When the pool opens: immediately when the last paid berth sells, or on the first interaction after the 24-hour deadline — whichever comes first. HRBR transfers are locked until that moment.</p></details>
+    <details><summary data-i18n="q5">What happens to unsold berths?</summary><p data-i18n="a5">They are burned when the pool opens, together with any unused liquidity reserve. Only distributed shares, the liquidity reserve actually paired, and the invite reward pool survive.</p></details>
+  </section>
+
+  <footer>
+    <div data-i18n="foot_contract">Sale contract (BNB Smart Chain)</div>
+    <div class="addr">0xa5844F0539E289C9A477672818Ee263eF862b517</div>
+    <p style="margin-top:10px" data-i18n="foot_note">Verify the address on this page against website() in the contract before transacting. This site never asks for a private key, seed phrase or password.</p>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+<script>
+"use strict";
+const CONTRACT = "0xa5844F0539E289C9A477672818Ee263eF862b517";
+const START = 1794816000, POOL_DEADLINE = 1794902400, PRICE_WEI = 6000000000000000n;
+
+const I18N = {
+  en: { nav_sale:"Berths", nav_invites:"Invites", nav_how:"How it works", nav_agents:"For agents", nav_faq:"FAQ", connect:"Connect Wallet",
+    kicker:"A harbor for agents & humans", h1:'Every ship needs<br>a <span class="thin">berth</span>.',
+    tagline:"HARBOR is a seat sale on BNB Smart Chain. Claim one free berth per wallet, or buy up to ten. When the harbor fills — or 24 hours pass — the PancakeSwap pool opens, the LP is burned, and the fleet sails.",
+    cd_open:"Sale opens in", cd_pool:"Pool opens by",
+    st_free:"Free berths — 1 per wallet, agents & humans", st_paid:"Paid berths at 0.006 BNB — max 10 per wallet",
+    st_immutable:"No owner, no admin keys, no pause, no blacklist", st_deadline:"The pool always opens — on sellout or within 24 hours",
+    sale_h:"Claim your berth", sale_sub:"One free berth per wallet — no Agent ID, no posts, no gatekeeping. Paid berths are open to everyone. Whoever arrives first, docks first.",
+    free_h:"Free berth", free_sub:"1 share = 1,000,000 HRBR. One claim per wallet, ever.", claimed:"claimed", left:"left",
+    inviter:"Inviter address (optional)", claim_btn:"Claim free berth", free_note:"Your inviter is recorded on your first mint only, and only if they have already minted.",
+    paid_h:"Paid berth", paid_sub:"0.006 BNB per share.", sold:"sold",
+    seats:"Seats (max 10 per wallet)", buy_btn:"Buy berths", paid_note:"Exact payment only. Taking a free berth never reduces your paid allowance.",
+    pool_t:"The pool always opens — within 24 hours at the latest",
+    pool_d:"The PancakeSwap pool opens the moment the last paid berth sells, or on the first interaction after the 24-hour deadline. Sale proceeds plus the token reserve become liquidity, LP tokens are burned, and every unsold berth token is burned with them. HRBR transfers stay locked until the pool opens.",
+    inv_h:"Top inviters", inv_sub:"Invite wallets to the harbor. Inviters share a reward pool of 800,000,000 HRBR, paid pro-rata by invite count and claimable after the pool opens. The board shows the top 100.",
+    th_addr:"Address", th_inv:"Invites", th_share:"Est. reward", reward_btn:"Claim my invite reward", inv_note:"Your inviter is locked in on your first mint. Self-invites do not count.",
+    how_h:"How it works", how_sub:"Four steps, all enforced by one immutable contract. No owner, no admin keys, no pause, no blacklist, no withdrawals.",
+    s1_h:"Dock", s1_p:"Connect any wallet on BNB Smart Chain. Agents and humans board through the same gate.",
+    s2_h:"Take a berth", s2_p:"Claim 1 free share, buy up to 10 paid shares at 0.006 BNB each, or do both.",
+    s3_h:"Harbor fills", s3_p:"Invite others and climb the board. Proceeds from every paid berth are held by the contract for the pool.",
+    s4_h:"Fleet sails", s4_p:"The pool opens on sellout or after 24 hours. LP is burned, unsold tokens are burned, transfers unlock, and trading begins.",
+    ag_h:"For agents", ag_sub:"Paste this prompt into your agent. It verifies the contract against the address published here before signing anything, and waits for your explicit approval.",
+    faq_h:"FAQ",
+    q1:"Who can claim a free berth?", a1:"Anyone. Every wallet — agent-operated or human — may claim exactly one free share. There is no Agent ID check, no social post and no allowlist.",
+    q2:"Who can buy paid berths?", a2:"Anyone with a wallet and BNB. Each wallet may hold at most 10 paid seats during the sale, at exactly 0.006 BNB per seat.",
+    q3:"Where does the money go?", a3:"Proceeds from paid berths stay locked in the immutable contract and seed the liquidity pool when it opens. Nothing can be withdrawn by anyone, and no one can change the rules.",
+    q4:"When does trading start?", a4:"When the pool opens: immediately when the last paid berth sells, or on the first interaction after the 24-hour deadline — whichever comes first. HRBR transfers are locked until that moment.",
+    q5:"What happens to unsold berths?", a5:"They are burned when the pool opens, together with any unused liquidity reserve. Only distributed shares, the liquidity reserve actually paired, and the invite reward pool survive.",
+    foot_contract:"Sale contract (BNB Smart Chain)", cd_live:"Sale is live", pool_open_lbl:"POOL OPEN", my_free_yes:"Your wallet: free berth already claimed \u2713", my_free_no:"Your wallet: free berth not claimed yet", my_paid:"Your paid berths: ", my_inv:"Your invites: ", my_claimable:" \u00b7 claimable \u2248 ", share_t:"You are on board! Tell the harbor:", share_btn:"Share on X", st_connect_first:"Connect your wallet first.", st_pending:"Transaction sent \u2014 waiting for confirmation\u2026", st_done:"Confirmed \u2713", st_err:"Transaction failed or was rejected.", foot_note:"Verify the address on this page against website() in the contract before transacting. This site never asks for a private key, seed phrase or password." },
+  zh: { nav_sale:"席位", nav_invites:"邀请榜", nav_how:"运作方式", nav_agents:"智能体专区", nav_faq:"常见问题", connect:"连接钱包",
+    kicker:"智能体与人类共同的港湾", h1:'每艘船都需要<br>一个<span class="thin">泊位</span>。',
+    tagline:"HARBOR 是 BNB 智能链上的席位销售。每个钱包可领取一个免费泊位，或购买最多十个付费泊位。当港口满员——或 24 小时过去——PancakeSwap 流动池即开启，LP 被销毁，船队启航。",
+    cd_open:"销售开启倒计时", cd_pool:"流动池最迟开启",
+    st_free:"免费泊位 — 每钱包 1 个，智能体与人类均可", st_paid:"付费泊位 0.006 BNB — 每钱包最多 10 个",
+    st_immutable:"无所有者、无管理密钥、无暂停、无黑名单", st_deadline:"流动池必定开启——售罄或 24 小时内",
+    sale_h:"领取你的泊位", sale_sub:"每个钱包一个免费泊位——无需 Agent ID、无需发帖、无任何门槛。付费泊位向所有人开放。先到先停靠。",
+    free_h:"免费泊位", free_sub:"1 个席位 = 1,000,000 HRBR。每个钱包仅可领取一次。",
+    claimed:"已领取", left:"剩余", inviter:"邀请人地址（可选）", claim_btn:"领取免费泊位",
+    free_note:"邀请人仅在你首次铸造时记录，且对方必须已完成铸造。",
+    paid_h:"付费泊位", paid_sub:"每席 0.006 BNB。", sold:"已售",
+    seats:"席位数量（每钱包最多 10）", buy_btn:"购买泊位", paid_note:"仅接受精确付款。领取免费泊位不会减少你的付费额度。",
+    pool_t:"流动池必定开启 — 最迟 24 小时内",
+    pool_d:"当最后一个付费泊位售出，或在 24 小时期限后的第一次交互时，PancakeSwap 流动池立即开启。销售收益与代币储备组成流动性，LP 代币被销毁，所有未售出的泊位代币也一并销毁。在流动池开启之前，HRBR 转账处于锁定状态。",
+    inv_h:"邀请排行榜", inv_sub:"邀请更多钱包来到港湾。邀请人按邀请数量比例分享 800,000,000 HRBR 奖励池，流动池开启后可领取。榜单展示前 100 名。",
+    th_addr:"地址", th_inv:"邀请数", th_share:"预计奖励", reward_btn:"领取我的邀请奖励", inv_note:"邀请人在你首次铸造时锁定。自我邀请不计入。",
+    how_h:"运作方式", how_sub:"四个步骤，全部由一份不可变合约执行。无所有者、无管理密钥、无暂停、无黑名单、无提款。",
+    s1_h:"靠港", s1_p:"在 BNB 智能链上连接任意钱包。智能体与人类通过同一道门登船。",
+    s2_h:"占据泊位", s2_p:"领取 1 个免费席位、以每席 0.006 BNB 购买最多 10 个付费席位，或两者都做。",
+    s3_h:"港口渐满", s3_p:"邀请他人并攀登排行榜。每个付费泊位的收益都由合约保管，等待流动池开启。",
+    s4_h:"船队启航", s4_p:"流动池在售罄或 24 小时后开启。LP 被销毁，未售代币被销毁，转账解锁，交易开始。",
+    ag_h:"智能体专区", ag_sub:"将此提示词粘贴给你的智能体。它会先核对本页公布的合约地址再进行任何签名，并等待你的明确批准。",
+    faq_h:"常见问题",
+    q1:"谁可以领取免费泊位？", a1:"任何人。每个钱包——无论由智能体还是人类操作——都可以领取恰好一个免费席位。没有 Agent ID 检查、没有社交发帖、没有白名单。",
+    q2:"谁可以购买付费泊位？", a2:"任何拥有钱包和 BNB 的人。销售期间每个钱包最多持有 10 个付费席位，每席精确支付 0.006 BNB。",
+    q3:"资金去向如何？", a3:"付费泊位的收益锁定在不可变合约中，在流动池开启时注入流动性。任何人都无法提款，也无人能更改规则。",
+    q4:"交易何时开始？", a4:"流动池开启之时：最后一个付费泊位售出时立即开启，或在 24 小时期限后的第一次交互时开启，以先到者为准。在此之前 HRBR 转账被锁定。",
+    q5:"未售出的泊位会怎样？", a5:"它们会在流动池开启时与未使用的流动性储备一并销毁。仅保留已分发的席位、实际配对的流动性储备和邀请奖励池。",
+    foot_contract:"销售合约（BNB 智能链）", cd_live:"销售进行中", pool_open_lbl:"流动池已开启", my_free_yes:"你的钱包：免费泊位已领取 \u2713", my_free_no:"你的钱包：尚未领取免费泊位", my_paid:"你的付费泊位：", my_inv:"你的邀请数：", my_claimable:" \u00b7 可领取 \u2248 ", share_t:"你已登船！告诉港湾里的大家：", share_btn:"分享到 X", st_connect_first:"请先连接钱包。", st_pending:"交易已发送\u2014\u2014等待确认\u2026", st_done:"已确认 \u2713", st_err:"交易失败或被拒绝。", foot_note:"交易前请将本页地址与合约中的 website() 返回值核对。本站永不索要私钥、助记词或密码。" }
+};
+
+let lang = new URLSearchParams(location.search).get("lang") === "zh" ? "zh" : "en";
+function applyLang() {
+  const d = I18N[lang];
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.getAttribute("data-i18n");
+    if (d[k] !== undefined) el.innerHTML = d[k];
+  });
+  document.getElementById("langBtn").textContent = lang === "zh" ? "EN" : "中文";
+}
+document.getElementById("langBtn").addEventListener("click", () => { lang = lang === "zh" ? "en" : "zh"; applyLang(); tick(); if (walletAddr) refreshMine(); });
+applyLang();
+
+function fmtCountdown(target) {
+  let s = Math.max(0, target - Math.floor(Date.now() / 1000));
+  const d = Math.floor(s / 86400); s -= d * 86400;
+  const h = Math.floor(s / 3600); s -= h * 3600;
+  const m = Math.floor(s / 60); const sec = s - m * 60;
+  const p = n => String(n).padStart(2, "0");
+  return (d > 0 ? d + "d " : "") + p(h) + ":" + p(m) + ":" + p(sec);
+}
+function tick() {
+  const now = Math.floor(Date.now() / 1000);
+  document.getElementById("cdStart").textContent = now >= START ? I18N[lang].cd_live : fmtCountdown(START);
+  document.getElementById("cdPool").textContent = poolIsOpen ? I18N[lang].pool_open_lbl : fmtCountdown(POOL_DEADLINE);
+}
+tick(); setInterval(tick, 1000);
+
+const buyN = document.getElementById("buyN");
+function updCost() {
+  const n = BigInt(buyN.value);
+  const wei = n * PRICE_WEI;
+  document.getElementById("buyCost").textContent = (Number(wei) / 1e18).toFixed(3);
+}
+buyN.addEventListener("change", updCost); updCost();
+
+
+// ---------- Live chain wiring (read-only refresh + wallet) ----------
+const RPCS = ["https://bsc-mainnet.nodereal.io/v1/64a9df0874fb4a93b9d0a3849de012d3", "https://bsc-rpc.publicnode.com", "https://bsc-dataseed.binance.org"];
+const DEPLOY_BLOCK = 133873364;
+const INVITE_POOL_HRBR = 800000000n;
+const WC_PROJECT_ID = "ff5985647ed78916bed0155d2ff84a1c";
+const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
+const HARBOR_ABI = [
+  "function freeSold() view returns (uint256)",
+  "function paidSold() view returns (uint256)",
+  "function totalInvites() view returns (uint256)",
+  "function poolOpen() view returns (bool)",
+  "function freeClaimed(address) view returns (bool)",
+  "function paidByWallet(address) view returns (uint256)",
+  "function inviteCount(address) view returns (uint256)",
+  "function claimableInvite(address) view returns (uint256)",
+  "function claimFree(address inviter)",
+  "function buy(uint256 n, address inviter) payable",
+  "function claimInviteReward()",
+  "event FreeClaimed(address indexed user, address indexed inviter, uint256 freeSold)",
+  "event Bought(address indexed user, uint256 seats, uint256 paidWei, address indexed inviter, uint256 paidSold)"
+];
+let roContract = null, signerContract = null, walletAddr = null, lastTotalInvites = 0n;
+var poolIsOpen = false; // var (not let): tick() runs before this section on first load
+
+const fmtN = b => Number(b).toLocaleString("en-US");
+async function pickReadContract() {
+  for (const u of RPCS) {
+    try {
+      const p = new ethers.JsonRpcProvider(u, 56);
+      await p.getBlockNumber();
+      return new ethers.Contract(CONTRACT, HARBOR_ABI, p);
+    } catch (e) { /* try next RPC */ }
+  }
+  return null;
+}
+async function refreshBoard() {
+  try {
+    const prov = roContract.runner.provider;
+    const latest = await prov.getBlockNumber();
+    const counts = new Map();
+    const topicSets = [[ethers.id("FreeClaimed(address,address,uint256)")], [ethers.id("Bought(address,uint256,uint256,address,uint256)")]];
+    for (let from = DEPLOY_BLOCK; from <= latest; from += 49000) {
+      const to = Math.min(latest, from + 48999);
+      for (const t of topicSets) {
+        const logs = await prov.getLogs({ address: CONTRACT, topics: t, fromBlock: from, toBlock: to });
+        for (const lg of logs) {
+          const inv = ("0x" + lg.topics[2].slice(26)).toLowerCase();
+          if (inv === ZERO_ADDR) continue;
+          counts.set(inv, (counts.get(inv) || 0) + 1);
+        }
+      }
+    }
+    const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 100);
+    if (!rows.length) return;
+    document.getElementById("boardBody").innerHTML = rows.map(([a, c], i) => {
+      const est = lastTotalInvites > 0n ? (INVITE_POOL_HRBR * BigInt(c)) / lastTotalInvites : 0n;
+      return "<tr><td>" + (i + 1) + "</td><td class=\"addr\">" + a.slice(0, 8) + "\u2026" + a.slice(-6) + "</td><td>" + c + "</td><td>\u2248 " + fmtN(est) + " HRBR</td></tr>";
+    }).join("");
+  } catch (e) { /* keep previous board */ }
+}
+async function refreshMine() {
+  if (!walletAddr || !roContract) return;
+  try {
+    const d = I18N[lang];
+    const [fc, pw, ic, cl] = await Promise.all([
+      roContract.freeClaimed(walletAddr), roContract.paidByWallet(walletAddr),
+      roContract.inviteCount(walletAddr), roContract.claimableInvite(walletAddr)]);
+    document.getElementById("myFree").textContent = fc ? d.my_free_yes : d.my_free_no;
+    document.getElementById("myPaid").textContent = d.my_paid + pw.toString() + " / 10";
+    document.getElementById("myReward").textContent = d.my_inv + ic.toString() + d.my_claimable + fmtN(cl / (10n ** 18n)) + " HRBR";
+  } catch (e) { /* keep previous values */ }
+}
+async function refreshReads() {
+  if (!roContract) return;
+  try {
+    const [f, p, ti, po] = await Promise.all([roContract.freeSold(), roContract.paidSold(), roContract.totalInvites(), roContract.poolOpen()]);
+    lastTotalInvites = ti; poolIsOpen = po;
+    document.getElementById("freeSold").textContent = fmtN(f);
+    document.getElementById("freeLeft").childNodes[0].textContent = fmtN(1500n - f) + " ";
+    document.getElementById("freeBar").style.width = (Number(f) / 15) + "%";
+    document.getElementById("paidSold").textContent = fmtN(p);
+    document.getElementById("paidLeft").childNodes[0].textContent = fmtN(4500n - p) + " ";
+    document.getElementById("paidBar").style.width = (Number(p) / 45) + "%";
+    tick();
+    await refreshBoard();
+    if (walletAddr) await refreshMine();
+  } catch (e) { /* keep previous values */ }
+}
+function loadScript(u) {
+  return new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = u; sc.onload = res; sc.onerror = rej; document.head.appendChild(sc); });
+}
+async function loadWC() {
+  if (window["@walletconnect/ethereum-provider"]) return;
+  const urls = ["https://unpkg.com/@walletconnect/ethereum-provider@2.21.0/dist/index.umd.js",
+                "https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.0/dist/index.umd.js"];
+  for (const u of urls) { try { await loadScript(u); if (window["@walletconnect/ethereum-provider"]) return; } catch (e) { /* fallback */ } }
+  throw new Error("WalletConnect load failed");
+}
+async function connectWallet() {
+  let eip1193;
+  if (window.ethereum) {
+    eip1193 = window.ethereum;
+    await eip1193.request({ method: "eth_requestAccounts" });
+  } else {
+    await loadWC();
+    const wcProvider = await window["@walletconnect/ethereum-provider"].EthereumProvider.init({
+      projectId: WC_PROJECT_ID, chains: [56], showQrModal: true, rpcMap: { 56: RPCS[0] } });
+    await wcProvider.connect();
+    eip1193 = wcProvider;
+  }
+  const bp = new ethers.BrowserProvider(eip1193);
+  const net = await bp.getNetwork();
+  if (Number(net.chainId) !== 56) {
+    try { await eip1193.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x38" }] }); } catch (e) { /* user may switch manually */ }
+  }
+  const signer = await bp.getSigner();
+  walletAddr = await signer.getAddress();
+  signerContract = new ethers.Contract(CONTRACT, HARBOR_ABI, signer);
+  roContract = new ethers.Contract(CONTRACT, HARBOR_ABI, bp);
+  document.getElementById("connectBtn").textContent = walletAddr.slice(0, 6) + "\u2026" + walletAddr.slice(-4);
+  await refreshReads();
+}
+function inviterFrom(id) {
+  const v = document.getElementById(id).value.trim();
+  return (typeof ethers !== "undefined" && ethers.isAddress(v)) ? v : ZERO_ADDR;
+}
+function setStatus(k) { const el = document.getElementById("txStatus"); if (el) el.textContent = k ? (I18N[lang][k] || "") : ""; }
+async function runTx(fn) {
+  if (!signerContract) { setStatus("st_connect_first"); return false; }
+  try {
+    setStatus("st_pending");
+    const tx = await fn();
+    await tx.wait();
+    setStatus("st_done");
+    await refreshReads();
+    return true;
+  } catch (e) { setStatus("st_err"); return false; }
+}
+function showShare() {
+  const text = lang === "zh"
+    ? "\u6211\u521a\u521a\u5728 HARBOR (HRBR) \u9886\u53d6\u4e86\u6cca\u4f4d \u2693 \u6bcf\u4e2a\u94b1\u5305 1 \u4e2a\u514d\u8d39\u6cca\u4f4d\uff1a "
+    : "I just took my berth at HARBOR (HRBR) \u2693 One free berth per wallet: ";
+  document.getElementById("shareLink").href = "https://x.com/intent/post?text=" + encodeURIComponent(text + "https://harbor-hrbr.github.io/harbor/");
+  document.getElementById("shareBox").style.display = "flex";
+}
+document.getElementById("connectBtn").addEventListener("click", async () => { try { await connectWallet(); } catch (e) { setStatus("st_err"); } });
+document.getElementById("claimBtn").addEventListener("click", async () => { if (await runTx(() => signerContract.claimFree(inviterFrom("freeInviter")))) showShare(); });
+document.getElementById("buyBtn").addEventListener("click", async () => {
+  const n = BigInt(document.getElementById("buyN").value);
+  if (await runTx(() => signerContract.buy(n, inviterFrom("buyInviter"), { value: n * PRICE_WEI }))) showShare();
+});
+document.getElementById("rewardBtn").addEventListener("click", async () => { await runTx(() => signerContract.claimInviteReward()); });
+(async function initReads() {
+  if (typeof ethers === "undefined") return;
+  roContract = await pickReadContract();
+  if (roContract) { refreshReads(); setInterval(refreshReads, 20000); }
+})();
+
+</script>
+</body>
+</html>

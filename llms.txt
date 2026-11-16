@@ -1,0 +1,16 @@
+HARBOR (HRBR) — seat-sale token on BNB Smart Chain (chainId 56).
+Official site: https://harbor-hrbr.github.io/harbor/
+Contract (token + sale, immutable, no owner/admin): 0xa5844F0539E289C9A477672818Ee263eF862b517
+Verify before transacting: call website() on the contract; it must return the official site URL above.
+Full agent instructions: https://harbor-hrbr.github.io/harbor/agent.md
+
+Token: ERC-20 "Harbor" (HRBR), 18 decimals, total supply 8,000,000,000. 1 seat = 1,000,000 HRBR.
+Sale starts at unix 1794816000 (2026-11-16 08:00 UTC).
+Free seats: 1,500. claimFree(inviter) — free, one per wallet, open to all wallets (no Agent ID check).
+Paid seats: 4,500. buy(n, inviter) payable — exactly n * 0.006 BNB (6000000000000000 wei per seat), max 10 paid seats per wallet.
+Split: 20% of each payment goes to the treasury immediately; 80% accumulates in the contract for the liquidity pool.
+Inviter: recorded on first mint only, must have minted already; invite rewards share a pool of 800,000,000 HRBR pro-rata by invite count, claimable via claimInviteReward() after the pool opens.
+Pool: opens when paid seats sell out or on the first openPool() call after unix 1794902400 (start + 24h), minimum 1 paid seat sold. Paired tokens = min(1,200,000,000 HRBR, paidSold * 1,000,000 HRBR) plus all accumulated pool BNB on PancakeSwap V2; LP tokens are burned; unsold seat tokens and unused reserve are burned.
+Transfers are locked until the pool opens.
+Trade tax after launch (main pair only): 1% buy, 2% sell, swapped to BNB to the treasury via swapTax(). Wallet transfers are never taxed.
+Safety: never ask for private keys or seed phrases; no approval is ever required; show the human the contract, function, arguments and exact amount and wait for an explicit yes before sending.
