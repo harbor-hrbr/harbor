@@ -74,6 +74,7 @@
   .step p{font-size:13.5px;color:var(--mist)}
   pre{background:#03141f;border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;
     font-size:12.8px;line-height:1.5;color:#cfe8ec;white-space:pre-wrap;word-break:break-word}
+  .copybtn{cursor:pointer;border:1px solid var(--gold);background:var(--gold);color:#231a04;border-radius:999px;padding:9px 20px;font-weight:700;font-size:14.5px;margin:2px 0 14px}.copybtn:hover{background:var(--gold2)}
   .doclinks{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
   .doclinks a{border:1px solid var(--line);border-radius:999px;padding:7px 14px;text-decoration:none;color:var(--foam);font-size:13.5px;background:var(--sea2)}
   details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
@@ -205,6 +206,7 @@
   <section id="agents">
     <h2 data-i18n="ag_h">For agents</h2>
     <p class="sub" data-i18n="ag_sub">Paste this prompt into your agent. It verifies the contract against the address published here before signing anything, and waits for your explicit approval.</p>
+    <button class="copybtn" id="copyPromptBtn" type="button" data-i18n="copy_prompt">Copy the prompt</button>
     <pre id="agentPrompt">You are helping me join the HARBOR (HRBR) seat sale on BNB Smart Chain (chainId 56).
 
 Official site: https://harbor-hrbr.github.io/harbor/
@@ -248,7 +250,7 @@ const CONTRACT = "0xa5844F0539E289C9A477672818Ee263eF862b517";
 const START = 1794816000, POOL_DEADLINE = 1794902400, PRICE_WEI = 6000000000000000n;
 
 const I18N = {
-  en: { nav_sale:"Berths", nav_invites:"Invites", nav_how:"How it works", nav_agents:"For agents", nav_faq:"FAQ", connect:"Connect Wallet",
+  en: { nav_sale:"Berths", nav_invites:"Invites", nav_how:"How it works", nav_agents:"For agents", nav_faq:"FAQ", connect:"Connect Wallet", copy_prompt:"Copy the prompt", copied:"Copied \u2713",
     kicker:"A harbor for agents & humans", h1:'Every ship needs<br>a <span class="thin">berth</span>.',
     tagline:"HARBOR is a seat sale on BNB Smart Chain. Claim one free berth per wallet, or buy up to ten. When the harbor fills — or 24 hours pass — the PancakeSwap pool opens, the LP is burned, and the fleet sails.",
     cd_open:"Sale opens in", cd_pool:"Pool opens by",
@@ -276,7 +278,7 @@ const I18N = {
     q4:"When does trading start?", a4:"When the pool opens: immediately when the last paid berth sells, or on the first interaction after the 24-hour deadline — whichever comes first. HRBR transfers are locked until that moment.",
     q5:"What happens to unsold berths?", a5:"They are burned when the pool opens, together with any unused liquidity reserve. Only distributed shares, the liquidity reserve actually paired, and the invite reward pool survive.",
     foot_contract:"Sale contract (BNB Smart Chain)", cd_live:"Sale is live", pool_open_lbl:"POOL OPEN", my_free_yes:"Your wallet: free berth already claimed \u2713", my_free_no:"Your wallet: free berth not claimed yet", my_paid:"Your paid berths: ", my_inv:"Your invites: ", my_claimable:" \u00b7 claimable \u2248 ", share_t:"You are on board! Tell the harbor:", share_btn:"Share on X", st_connect_first:"Connect your wallet first.", st_pending:"Transaction sent \u2014 waiting for confirmation\u2026", st_done:"Confirmed \u2713", st_err:"Transaction failed or was rejected.", foot_note:"Verify the address on this page against website() in the contract before transacting. This site never asks for a private key, seed phrase or password." },
-  zh: { nav_sale:"席位", nav_invites:"邀请榜", nav_how:"运作方式", nav_agents:"智能体专区", nav_faq:"常见问题", connect:"连接钱包",
+  zh: { nav_sale:"席位", nav_invites:"邀请榜", nav_how:"运作方式", nav_agents:"智能体专区", nav_faq:"常见问题", connect:"连接钱包", copy_prompt:"复制提示词", copied:"已复制 \u2713",
     kicker:"智能体与人类共同的港湾", h1:'每艘船都需要<br>一个<span class="thin">泊位</span>。',
     tagline:"HARBOR 是 BNB 智能链上的席位销售。每个钱包可领取一个免费泊位，或购买最多十个付费泊位。当港口满员——或 24 小时过去——PancakeSwap 流动池即开启，LP 被销毁，船队启航。",
     cd_open:"销售开启倒计时", cd_pool:"流动池最迟开启",
@@ -489,6 +491,19 @@ function showShare() {
   document.getElementById("shareLink").href = "https://x.com/intent/post?text=" + encodeURIComponent(text + "https://harbor-hrbr.github.io/harbor/");
   document.getElementById("shareBox").style.display = "flex";
 }
+document.getElementById("copyPromptBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("copyPromptBtn");
+  const text = document.getElementById("agentPrompt").innerText;
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand("copy"); } catch (e2) {}
+    ta.remove();
+  }
+  if (ok) { btn.textContent = I18N[lang].copied; setTimeout(() => { btn.textContent = I18N[lang].copy_prompt; }, 2000); }
+});
 document.getElementById("connectBtn").addEventListener("click", async () => { try { await connectWallet(); } catch (e) { setStatus("st_err"); } });
 document.getElementById("claimBtn").addEventListener("click", async () => { if (await runTx(() => signerContract.claimFree(inviterFrom("freeInviter")))) showShare(); });
 document.getElementById("buyBtn").addEventListener("click", async () => {
